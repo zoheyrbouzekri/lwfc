@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الإعدادات - الرابطة الولائية لكرة القدم الشلف</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --green: #006233;
+      --green-light: #00a84f;
+      --white: #ffffff;
+      --red: #D21034;
+      --gold: #C9A84C;
+      --dark: #0a1f0f;
+      --navbar-h: 64px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      position: relative;
+      padding-top: var(--navbar-h);
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(0,98,51,0.3) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(210,16,52,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 60% 80%, rgba(201,168,76,0.1) 0%, transparent 50%);
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(201,168,76,0.15) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: 0;
+      animation: drift 20s linear infinite;
+    }
+
+    @keyframes drift {
+      0% { transform: translate(0,0); }
+      100% { transform: translate(40px, 40px); }
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--navbar-h);
+      background: rgba(10, 31, 15, 0.95);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+    }
+
+    .navbar::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #006233 33%, #fff 33%, #fff 66%, #D21034 66%);
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--gold);
+      font-weight: 900;
+      font-size: 0.95rem;
+      text-decoration: none;
+    }
+
+    .navbar-brand i { font-size: 1.2rem; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.15rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 0.4rem 0.75rem;
+      border-radius: 8px;
+      transition: background 0.2s, color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      white-space: nowrap;
+    }
+
+    .nav-links a i { font-size: 0.85rem; }
+    .nav-links a:hover, .nav-links a.active {
+      background: rgba(201,168,76,0.15);
+      color: var(--gold);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
+      background: transparent;
+      border: none;
+      transition: background 0.2s;
+    }
+
+    .hamburger:hover { background: rgba(201,168,76,0.15); }
+
+    .hamburger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--gold);
+      border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: var(--navbar-h);
+      left: 0; right: 0;
+      background: rgba(10, 31, 15, 0.98);
+      backdrop-filter: blur(14px);
+      border-bottom: 2px solid rgba(201,168,76,0.2);
+      z-index: 99;
+      padding: 0.75rem 1.25rem 1rem;
+      flex-direction: column;
+      gap: 0.2rem;
+      animation: slideDown 0.25s ease;
+    }
+
+    .mobile-menu.open { display: flex; }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .mobile-menu a {
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .mobile-menu a:hover { background: rgba(201,168,76,0.12); color: var(--gold); }
+    .mobile-menu a i { width: 18px; text-align: center; color: var(--gold); }
+
+    /* ===== CONTENT ===== */
+    .container {
+      position: relative;
+      z-index: 1;
+      padding: 2rem 1.5rem;
+      width: 100%;
+      max-width: 580px;
+    }
+
+    /* Page title */
+    .page-title {
+      color: var(--white);
+      font-size: clamp(1.6rem, 5vw, 2.2rem);
+      font-weight: 900;
+      text-align: right;
+      margin-bottom: 0.5rem;
+      animation: fadeDown 0.6s ease both;
+    }
+
+    .title-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.1);
+      margin-bottom: 1.5rem;
+      animation: fadeDown 0.6s 0.1s ease both;
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Settings cards */
+    .settings-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .settings-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 1.1rem 1.25rem;
+      opacity: 0;
+      animation: slideIn 0.55s ease forwards;
+      backdrop-filter: blur(6px);
+    }
+
+    .settings-card:nth-child(1) { animation-delay: 0.2s; }
+    .settings-card:nth-child(2) { animation-delay: 0.35s; }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Language row */
+    .setting-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .setting-label {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--white);
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .setting-label i {
+      color: var(--green-light);
+      font-size: 1.1rem;
+    }
+
+    .setting-label.red i { color: var(--red); }
+
+    .lang-badge {
+      background: rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.85);
+      font-family: 'Tajawal', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 0.45rem 1.1rem;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.15);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .lang-badge:hover { background: rgba(255,255,255,0.2); }
+
+    /* Notification section */
+    .notif-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .notif-status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.1rem;
+    }
+
+    .status-text {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.95rem;
+      font-weight: 400;
+    }
+
+    /* Toggle switch */
+    .toggle-wrap {
+      display: flex;
+      align-items: center;
+    }
+
+    .toggle {
+      position: relative;
+      width: 54px;
+      height: 30px;
+      flex-shrink: 0;
+    }
+
+    .toggle input { opacity: 0; width: 0; height: 0; }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background: rgba(255,255,255,0.15);
+      border-radius: 30px;
+      transition: background 0.3s;
+    }
+
+    .slider::before {
+      content: '';
+      position: absolute;
+      height: 22px;
+      width: 22px;
+      right: 4px;
+      top: 4px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.3s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .toggle input:checked + .slider {
+      background: var(--green-light);
+    }
+
+    .toggle input:checked + .slider::before {
+      transform: translateX(-24px);
+    }
+
+    /* Test notification button */
+    .test-btn {
+      width: 100%;
+      padding: 0.85rem;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      color: rgba(255,255,255,0.65);
+      font-family: 'Tajawal', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.2s, color 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .test-btn:hover {
+      background: rgba(255,255,255,0.13);
+      color: rgba(255,255,255,0.9);
+    }
+
+    .test-btn:active { transform: scale(0.98); }
+
+    /* Ripple */
+    .test-btn .ripple {
+      position: absolute;
+      border-radius: 50%;
+      transform: scale(0);
+      background: rgba(255,255,255,0.2);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+    @keyframes ripple { to { transform: scale(4); opacity: 0; } }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: rgba(0, 168, 79, 0.95);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s;
+      opacity: 0;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .footer {
+      margin-top: 2rem;
+      text-align: center;
+      color: rgba(255,255,255,0.2);
+      font-size: 0.75rem;
+      animation: fadeDown 0.8s 0.6s ease both;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .container { padding: 1.5rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a class="navbar-brand" href="index.html">
+      <i class="fa-solid fa-futbol"></i>
+      <span>ر.و.ك.ق الشلف</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.php"><i class="fa-solid fa-house"></i> الرئيسية</a></li>
+      <li><a href="contact.php"><i class="fa-solid fa-phone"></i> اتصل بنا</a></li>
+      <li><a href="a_propos.php"><i class="fa-solid fa-circle-info"></i> عن التطبيق</a></li>
+      <li><a href="suivez_nous.php"><i class="fa-solid fa-share-nodes"></i> تابعنا</a></li>
+      <li><a href="reglages.php" class="active"><i class="fa-solid fa-gear"></i> الإعدادات</a></li>
+    </ul>
+
+    <button class="hamburger" id="hamburger" aria-label="القائمة" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.php" onclick="toggleMenu()"><i class="fa-solid fa-house"></i> الرئيسية</a>
+    <a href="contact.php" onclick="toggleMenu()"><i class="fa-solid fa-phone"></i> اتصل بنا</a>
+    <a href="a_propos.php" onclick="toggleMenu()"><i class="fa-solid fa-circle-info"></i> عن التطبيق</a>
+    <a href="suivez_nous.php" onclick="toggleMenu()"><i class="fa-solid fa-share-nodes"></i> تابعنا</a>
+    <a href="reglages.php" onclick="toggleMenu()"><i class="fa-solid fa-gear"></i> الإعدادات</a>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <i class="fa-solid fa-bell"></i>
+    تم إرسال الإشعار التجريبي
+  </div>
+
+  <!-- MAIN -->
+  <div class="container">
+
+    <h1 class="page-title">الإعدادات</h1>
+    <div class="title-divider"></div>
+
+    <div class="settings-list">
+
+      <!-- Language card -->
+      <div class="settings-card">
+        <div class="setting-row">
+          <span class="lang-badge" id="langBadge" onclick="toggleLang()">العربية</span>
+          <div class="setting-label">
+            <span>Language / اللغة</span>
+            <i class="fa-solid fa-earth-africa"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notifications card -->
+      <div class="settings-card">
+        <div class="notif-header">
+          <div></div>
+          <div class="setting-label red">
+            <span>الإشعارات (OneSignal)</span>
+            <i class="fa-solid fa-bell"></i>
+          </div>
+        </div>
+
+        <div class="notif-status">
+          <div class="toggle-wrap">
+            <label class="toggle">
+              <input type="checkbox" id="notifToggle" checked onchange="updateStatus()">
+              <span class="slider"></span>
+            </label>
+          </div>
+          <span class="status-text" id="statusText">مفعّل</span>
+        </div>
+
+        <button class="test-btn" onclick="sendTestNotif(event)">
+          إرسال إشعار تجريبي
+        </button>
+      </div>
+
+    </div>
+
+    <p class="footer">© 2025 &nbsp;·&nbsp; جميع الحقوق محفوظة &nbsp;·&nbsp; الرابطة الولائية لكرة القدم الشلف</p>
+  </div>
+
+  <script>
+    /* Navbar toggle */
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+      document.getElementById('hamburger').classList.toggle('open');
+    }
+
+    /* Language switcher */
+    let isArabic = true;
+    function toggleLang() {
+      isArabic = !isArabic;
+      const badge = document.getElementById('langBadge');
+      badge.textContent = isArabic ? 'العربية' : 'Français';
+    }
+
+    /* Notification toggle */
+    function updateStatus() {
+      const on = document.getElementById('notifToggle').checked;
+      document.getElementById('statusText').textContent = on ? 'مفعّل' : 'معطّل';
+    }
+
+    /* Test notification */
+    function sendTestNotif(e) {
+      /* Ripple */
+      const btn = e.currentTarget;
+      const circle = document.createElement('span');
+      const d = Math.max(btn.clientWidth, btn.clientHeight);
+      const r = d / 2;
+      const rect = btn.getBoundingClientRect();
+      circle.style.width = circle.style.height = `${d}px`;
+      circle.style.left = `${e.clientX - rect.left - r}px`;
+      circle.style.top = `${e.clientY - rect.top - r}px`;
+      circle.classList.add('ripple');
+      btn.querySelector('.ripple')?.remove();
+      btn.appendChild(circle);
+
+      /* Toast */
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+  </script>
+</body>
+</html>
